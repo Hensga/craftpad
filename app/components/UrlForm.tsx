@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import ColorDisplay from "./ColorDisplay";
+import { toast, Toaster } from "react-hot-toast";
 
 export function UrlForm() {
   const [url, setUrl] = useState("");
@@ -9,9 +10,19 @@ export function UrlForm() {
   const [linkHoverColors, setLinkHoverColors] = useState<string[] | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const resetColors = () => {
+    setColors(null);
+    setAllColors(null);
+    setLinkColors(null);
+    setLinkHoverColors(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
     setLoading(true);
+    resetColors();
+    const toastId = toast.loading("Lade Daten...");
     try {
       const response = await fetch("/api/analyze", {
         method: "POST",
@@ -25,8 +36,12 @@ export function UrlForm() {
       setAllColors(data.allColors);
       setLinkColors(data.linkColors);
       setLinkHoverColors(data.linkHoverColors);
+      toast.dismiss(toastId);
+      toast.success("Daten erfolgreich geladen!");
     } catch (error) {
       console.error("Fehler beim Abrufen der Daten: ", error);
+      toast.dismiss(toastId);
+      toast.error("Fehler beim Abrufen der Daten");
     } finally {
       setLoading(false);
     }
@@ -54,7 +69,7 @@ export function UrlForm() {
           Analysieren
         </button>
       </form>
-      {loading && <p>Analysiere... Bitte warten</p>}
+      <Toaster />
       {colors && (
         <ColorDisplay title="Top 3 prägnanteste Farben" colors={colors} />
       )}

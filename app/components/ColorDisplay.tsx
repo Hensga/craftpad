@@ -1,5 +1,8 @@
 import { toast, Toaster } from "react-hot-toast";
 
+// Prevent multiple toasts from overlapping by using a unique toast ID
+let toastId: string | null = null;
+
 type ColorDisplayProps = {
   title: string;
   colors: string[];
@@ -7,13 +10,23 @@ type ColorDisplayProps = {
 
 export default function ColorDisplay({ title, colors }: ColorDisplayProps) {
   const handleColorClick = (color: string) => {
+    // Dismiss any existing toast to prevent overlap
+    if (toastId) {
+      toast.dismiss(toastId);
+    }
+
     navigator.clipboard
       .writeText(color)
       .then(() => {
-        toast.success(`Farbe ${color} wurde in die Zwischenablage kopiert`);
+        toastId = toast.success(
+          `Farbe ${color} wurde in die Zwischenablage kopiert`,
+          { id: toastId }
+        );
       })
       .catch((error) => {
-        console.error("Fehler beim Kopieren der Farbe: ", error);
+        toastId = toast.error("Fehler beim Kopieren der Farbe", {
+          id: toastId,
+        });
       });
   };
 
@@ -37,10 +50,10 @@ export default function ColorDisplay({ title, colors }: ColorDisplayProps) {
             }}
           >
             {color}
-            <Toaster />
           </div>
         ))}
       </div>
+      <Toaster />
     </div>
   );
 }
