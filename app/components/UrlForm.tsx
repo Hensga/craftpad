@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import ColorDisplay from "./ColorDisplay";
 
 export function UrlForm() {
   const [url, setUrl] = useState("");
@@ -32,7 +33,6 @@ export function UrlForm() {
   };
 
   useEffect(() => {
-    // Debugging useEffect to check if linkHoverColors are received
     if (linkHoverColors) {
       console.log("Link Hover Colors: ", linkHoverColors);
     }
@@ -56,113 +56,17 @@ export function UrlForm() {
       </form>
       {loading && <p>Analysiere... Bitte warten</p>}
       {colors && (
-        <div>
-          <h3>Top 3 prägnanteste Farben:</h3>
-          <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-            {colors.map((color, index) => (
-              <div
-                key={index}
-                style={{
-                  backgroundColor: color,
-                  color: "#000",
-                  padding: "10px",
-                  borderRadius: "4px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "100px",
-                  height: "100px",
-                  textAlign: "center",
-                  fontWeight: "bold",
-                }}
-              >
-                {color}
-              </div>
-            ))}
-          </div>
-        </div>
+        <ColorDisplay title="Top 3 prägnanteste Farben" colors={colors} />
       )}
       {allColors && (
-        <div>
-          <h3>Alle gefundene Farben:</h3>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-            {allColors.map((color, index) => (
-              <div
-                key={index}
-                style={{
-                  backgroundColor: color,
-                  color: "#000",
-                  padding: "10px",
-                  borderRadius: "4px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "100px",
-                  height: "100px",
-                  textAlign: "center",
-                  fontWeight: "bold",
-                }}
-              >
-                {color}
-              </div>
-            ))}
-          </div>
-        </div>
+        <ColorDisplay title="Alle gefundene Farben" colors={allColors} />
       )}
-      {linkColors && (
-        <div>
-          <h3>Link Farben:</h3>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-            {linkColors.map((color, index) => (
-              <div
-                key={index}
-                style={{
-                  backgroundColor: color,
-                  color: "#000",
-                  padding: "10px",
-                  borderRadius: "4px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "100px",
-                  height: "100px",
-                  textAlign: "center",
-                  fontWeight: "bold",
-                }}
-              >
-                {color}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      {linkHoverColors && linkHoverColors.length > 0 && (
-        <div>
-          <h3>Link Hover Farben:</h3>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-            {linkHoverColors.map((color, index) => (
-              <div
-                key={index}
-                style={{
-                  backgroundColor: color,
-                  color: "#000",
-                  padding: "10px",
-                  borderRadius: "4px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "100px",
-                  height: "100px",
-                  textAlign: "center",
-                  fontWeight: "bold",
-                }}
-              >
-                {color}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <div className="flex gap-12">
+        {linkColors && <ColorDisplay title="Link Farben" colors={linkColors} />}
+        {linkHoverColors && linkHoverColors.length > 0 && (
+          <ColorDisplay title="Link Hover Farben" colors={linkHoverColors} />
+        )}
+      </div>
     </div>
   );
 }

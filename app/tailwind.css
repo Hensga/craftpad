@@ -4,11 +4,16 @@
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  @apply bg-white dark:bg-[#232946];
+  @apply text-gray-900 dark:text-[#b8c1ec];
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
+}
+
+div {
+  @apply border-slate-900 dark:border-[#121629];
 }
 
 section {
