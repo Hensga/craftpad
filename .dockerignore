@@ -1,0 +1,2 @@
+# ignore node_modules so dockers module folder gets loaded
+node_modules

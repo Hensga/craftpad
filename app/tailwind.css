@@ -10,3 +10,7 @@ body {
     color-scheme: dark;
   }
 }
+
+section {
+  @apply pt-8;
+}
